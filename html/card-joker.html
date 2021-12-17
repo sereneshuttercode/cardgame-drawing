@@ -5,7 +5,7 @@
     <title>Inkscape Output</title>
 </head>
 <body>
-    <canvas id='canvas' width='0' height='0'></canvas>
+    <canvas id='canvas' width='512' height='512'></canvas>
     <script>
     var ctx = document.getElementById("canvas").getContext("2d");
     	
@@ -15,7 +15,9 @@
 	ctx.lineTo(512.000000, 0.000000);
 	ctx.lineTo(512.000000, 512.000000);
 	ctx.lineTo(0.000000, 512.000000);
-	
+	ctx.closePath();
+    ctx.stroke();
+    
 // #path11
 	ctx.beginPath();
 	ctx.moveTo(119.436000, 36.000000);
@@ -26,6 +28,7 @@
 	ctx.bezierCurveTo(410.860000, 476.000000, 423.932000, 458.763000, 423.932000, 437.500000);
 	ctx.lineTo(423.932000, 74.500000);
 	ctx.bezierCurveTo(423.932000, 53.237000, 410.860000, 36.000000, 394.734000, 36.000000);
+    
 	ctx.moveTo(145.805000, 46.951000);
 	ctx.lineTo(156.807000, 79.807000);
 	ctx.lineTo(191.455000, 80.119000);
@@ -36,6 +39,7 @@
 	ctx.lineTo(128.000000, 100.736000);
 	ctx.lineTo(100.152000, 80.120000);
 	ctx.lineTo(134.801000, 79.808000);
+    
 	ctx.moveTo(363.979000, 161.840000);
 	ctx.bezierCurveTo(371.106000, 171.299000, 376.718000, 182.529000, 380.811000, 193.880000);
 	ctx.bezierCurveTo(384.611000, 204.424000, 387.008000, 215.091000, 387.479000, 224.900000);
@@ -114,6 +118,7 @@
 	ctx.bezierCurveTo(337.212000, 321.861000, 303.169000, 315.532000, 291.141000, 313.566000);
 	ctx.bezierCurveTo(281.665000, 323.010000, 269.450000, 329.000000, 256.000000, 329.000000);
 	ctx.bezierCurveTo(242.548000, 329.000000, 230.335000, 323.009000, 220.860000, 313.566000);
+    
 	ctx.moveTo(337.982000, 378.215000);
 	ctx.lineTo(366.195000, 398.328000);
 	ctx.lineTo(394.410000, 378.215000);
@@ -124,7 +129,10 @@
 	ctx.lineTo(355.193000, 432.193000);
 	ctx.lineTo(320.545000, 431.881000);
 	ctx.lineTo(348.393000, 411.264000);
-
+    ctx.closePath();
+    
+    ctx.stroke();
+    
     </script>
 </body>
 </html>
