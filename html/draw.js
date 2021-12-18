@@ -1,29 +1,78 @@
 
-class CardDrawModel
+class CardModel
 {
-    constructor()
+    constructor(suit,value)
     {
+        var suits = ["spade","heart","club","diamond","red","black"];
+        var values = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14"];
+        this._suit = suit;
+        this._value = value;
+        
+        // Red and black are for the joker
+        // Joker is number 14
+        // 1 => Ace, 11 => Jack, 12 => Queen, 13 => King
+        
+        // Need to determine the colour of the card from suit
+        
+        
+        // Need to go through all of the points on the joker to find out where the ending point is so that it can be filled in properly
+        
+        
+        
+        
+        
+    }
+    get id() { return this._suit + this._value; }
+    get faceValue()
+    {
+        if ( this._value == "1" ) { return "ace"; }
+        else if ( this._value == "11" ) { return "jack"; }
+        else if ( this._value == "12" ) { return "queen"; }
+        else if ( this._value == "13" ) { return "king"; }
+        else if ( this._value == "14" ) { return "joker"; }
+        else { return this._value; }
+    }
+    draw(ctx,startX,startY,width,height)
+    {
+        // Width and height need to stay within the limits, so maybe they should be optional?
+        // Need to have a way of specifying the physical limits, not just calculate a percentage before this
+        
+        
+        
+        
+        
+        this.outerCardPerimeter(ctx,startX,startY)
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
     }
     
-    outerCardPerimeter(ctx)
+    
+    outerCardPerimeter(ctx,offsetX,offsetY,multiplier)
     {
         // Outer card shape dimensions
         ctx.beginPath();
-        ctx.moveTo(119.436000, 36.000000);
-        ctx.bezierCurveTo(103.310000, 36.000000, 90.236000, 53.237000, 90.236000, 74.500000);
-        ctx.lineTo(90.236000, 437.498000);
-        ctx.bezierCurveTo(90.236000, 458.761000, 103.310000, 475.998000, 119.436000, 475.998000);
-        ctx.lineTo(394.734000, 475.998000);
-        ctx.bezierCurveTo(410.860000, 475.998000, 423.932000, 458.761000, 423.932000, 437.498000);
-        ctx.lineTo(423.932000, 74.500000);
-        ctx.bezierCurveTo(423.932000, 53.237000, 410.860000, 36.000000, 394.734000, 36.000000);
-        ctx.lineTo(119.436000, 36.000000);
+        ctx.moveTo(offsetX + 119.436000 * multiplier,offsetY + 36.000000 * multiplier);
+        ctx.bezierCurveTo(offsetX + 103.310000 * multiplier, offsetY + 36.000000 * multiplier, offsetX + 90.236000 * multiplier, offsetY + 53.237000 * multiplier, offsetX + 90.236000 * multiplier, offsetY + 74.500000 * multiplier);
+        ctx.lineTo(offsetX + 90.236000 * multiplier, offsetY + 437.498000 * multiplier);
+        ctx.bezierCurveTo(offsetX + 90.236000 * multiplier, offsetY + 458.761000 * multiplier, offsetX + 103.310000 * multiplier, offsetY + 475.998000 * multiplier, offsetX + 119.436000 * multiplier, offsetY + 475.998000 * multiplier);
+        ctx.lineTo(offsetX + 394.734000 * multiplier, offsetY + 475.998000 * multiplier);
+        ctx.bezierCurveTo(offsetX + 410.860000 * multiplier, offsetY + 475.998000 * multiplier, offsetX + 423.932000 * multiplier, offsetY + 458.761000 * multiplier, offsetX + 423.932000 * multiplier, offsetY + 437.498000 * multiplier);
+        ctx.lineTo(offsetX + 423.932000 * multiplier, offsetY + 74.500000 * multiplier);
+        ctx.bezierCurveTo(offsetX + 423.932000 * multiplier, offsetY + 53.237000 * multiplier, offsetX + 410.860000 * multiplier, offsetY + 36.000000 * multiplier, offsetX + 394.734000 * multiplier, offsetY + 36.000000 * multiplier);
+        ctx.lineTo(offsetX + 119.436000 * multiplier, offsetY + 36.000000 * multiplier);
         ctx.closePath();
         ctx.stroke();
     }
     
-    clubDraw(ctx)
+    clubDraw(ctx,offsetX,offsetY,multiplier)
     {
         // club top
         ctx.beginPath();
@@ -889,11 +938,11 @@ function main() {
     
     
     
-    cardDraw.outerCardPerimeter(ctx);
+    cardDraw.outerCardPerimeter(ctx,10, 10,0.50);
     
-    cardDraw.starDraw(ctx);
+    //cardDraw.starDraw(ctx);
     
-    cardDraw.twoDraw(ctx);
+    //cardDraw.twoDraw(ctx);
     
     
     
