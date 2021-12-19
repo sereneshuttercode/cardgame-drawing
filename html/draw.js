@@ -1,12 +1,99 @@
 
+
+// Class for managing the deck
+class DeckModel
+{
+    constructor()
+    {
+        var suits = ["spade","heart","club","diamond"];
+        var faceValues = ["ace","2","3","4","5","6","7","8","9","10","jack","queen","king"];
+        
+        // Build a sorted deck array that can always be used as reference
+        this._deck = [];
+        for (var s = 0; s < suits.length; s++)
+        {
+            for (var v = 0; v < faceValues.length; v++)
+            {
+                var newCard = new CardModel(suits[s],faceValues[v]);
+                this._deck.push(newCard);
+            }
+        }
+        
+        // Build a shuffled deck object based on the unshuffled deck
+        this.shuffledDeck = this._deck;
+        
+        
+        // Image for the back of the cards
+        this.img = new Image(512,512);
+        this.img.src = "img/suits.png";
+        
+    }
+    // For shuffling the deck
+    shuffle()
+    {
+        /*
+         This is from:
+         https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
+         Modifed slightly to accomodate my needs
+         */
+        let currentIndex = this.shuffledDeck.length,  randomIndex;
+        
+        // While there remain elements to shuffle...
+        while (currentIndex != 0) {
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex--;
+            
+            // And swap it with the current element.
+            [this.shuffledDeck[currentIndex], this.shuffledDeck[randomIndex]] = [this.shuffledDeck[randomIndex], this.shuffledDeck[currentIndex]];
+        }
+        
+        return true;  // Just to return something
+    }
+}
+
+// Class for managing the types of cards
+class OldCardModel
+{
+    constructor(suit,faceValue)
+    {
+        this._suit = suit;
+        this._value = faceValue;
+        this.img = new Image(512,512);
+        this.img.src = "img/card-" + faceValue + "-" + suit + "s.png";
+    }
+    // Return an id that can be used for object
+    get id() { return (this._suit + this._value); }
+    // Return the suit of the card
+    get suit() { return this._suit; }
+    // Return the face value of the card
+    get faceValue() { return this._value; }
+    // Check if this card is the seven of spades
+    isSevenSpades() {
+        if ( this._suit == "spade" && this._value == "7" ) { return true; }
+        else { return false; }
+    }
+}
+
+
+
+
+
+
+
+
+
+
 class CardModel
 {
-    constructor(suit,value)
+    constructor(suit,faceValue)
     {
         var suits = ["spade","heart","club","diamond","red","black"];
         var values = ["1","2","3","4","5","6","7","8","9","10","11","12","13","14"];
         this._suit = suit;
-        this._value = value;
+        // Should set the _value property
+        this.faceValue = faceValue;
+        
         
         // Red and black are for the joker
         // Joker is number 14
@@ -32,42 +119,50 @@ class CardModel
         else if ( this._value == "14" ) { return "joker"; }
         else { return this._value; }
     }
+    set faceValue(faceValue)
+    {
+        if ( faceValue.toLowerCase() == "ace" ) { this._value = "1"; }
+        else if ( faceValue.toLowerCase() == "jack" ) { this._value = "11"; }
+        else if ( faceValue.toLowerCase() == "queen" ) { this._value = "12"; }
+        else if ( faceValue.toLowerCase() == "king" ) { this._value = "13"; }
+        else if ( faceValue.toLowerCase() == "joker" ) { this._value = "14"; }
+        else { this._value = "" + faceValue; }
+    }
     draw(ctx,startX,startY,width,height)
     {
         // Width and height need to stay within the limits, so maybe they should be optional?
         // Need to have a way of specifying the physical limits, not just calculate a percentage before this
         
+        // Adjustment amount taken away from the outer perimeter
+        // 90.236, 36
+        
+        // Outer dimensions from outerCardPerimeter
+        // 333.696, 439.998
         
         
         
+        this.outerCardPerimeter(ctx,startX,startY,1.0);
         
-        this.outerCardPerimeter(ctx,startX,startY)
-        
-        
-        
-        
-        
+        this.clubDraw(ctx,startX,startY,1.0);
         
         
         
         
         
     }
-    
-    
     outerCardPerimeter(ctx,offsetX,offsetY,multiplier)
     {
         // Outer card shape dimensions
         ctx.beginPath();
-        ctx.moveTo(offsetX + 119.436000 * multiplier,offsetY + 36.000000 * multiplier);
-        ctx.bezierCurveTo(offsetX + 103.310000 * multiplier, offsetY + 36.000000 * multiplier, offsetX + 90.236000 * multiplier, offsetY + 53.237000 * multiplier, offsetX + 90.236000 * multiplier, offsetY + 74.500000 * multiplier);
-        ctx.lineTo(offsetX + 90.236000 * multiplier, offsetY + 437.498000 * multiplier);
-        ctx.bezierCurveTo(offsetX + 90.236000 * multiplier, offsetY + 458.761000 * multiplier, offsetX + 103.310000 * multiplier, offsetY + 475.998000 * multiplier, offsetX + 119.436000 * multiplier, offsetY + 475.998000 * multiplier);
-        ctx.lineTo(offsetX + 394.734000 * multiplier, offsetY + 475.998000 * multiplier);
-        ctx.bezierCurveTo(offsetX + 410.860000 * multiplier, offsetY + 475.998000 * multiplier, offsetX + 423.932000 * multiplier, offsetY + 458.761000 * multiplier, offsetX + 423.932000 * multiplier, offsetY + 437.498000 * multiplier);
-        ctx.lineTo(offsetX + 423.932000 * multiplier, offsetY + 74.500000 * multiplier);
-        ctx.bezierCurveTo(offsetX + 423.932000 * multiplier, offsetY + 53.237000 * multiplier, offsetX + 410.860000 * multiplier, offsetY + 36.000000 * multiplier, offsetX + 394.734000 * multiplier, offsetY + 36.000000 * multiplier);
-        ctx.lineTo(offsetX + 119.436000 * multiplier, offsetY + 36.000000 * multiplier);
+        ctx.moveTo(offsetX + 29.200000 * multiplier,offsetY + 0.000000 * multiplier);
+        ctx.bezierCurveTo(offsetX + 13.074000 * multiplier, offsetY + 0.000000 * multiplier, offsetX + 0.000000 * multiplier, offsetY + 17.237000 * multiplier, offsetX + 0.000000 * multiplier, offsetY + 38.500000 * multiplier);
+        ctx.lineTo(offsetX + 0.000000 * multiplier, offsetY + 401.498000 * multiplier);
+        ctx.bezierCurveTo(offsetX + 0.000000 * multiplier, offsetY + 422.761000 * multiplier, offsetX + 13.074000 * multiplier, offsetY + 439.998000 * multiplier, offsetX + 29.200000 * multiplier, offsetY + 439.998000 * multiplier);
+        ctx.lineTo(offsetX + 304.498000 * multiplier, offsetY + 439.998000 * multiplier);
+        ctx.bezierCurveTo(offsetX + 320.624000 * multiplier, offsetY + 439.998000 * multiplier, offsetX + 333.696000 * multiplier, offsetY + 422.761000 * multiplier, offsetX + 333.696000 * multiplier, offsetY + 401.498000 * multiplier);
+        ctx.lineTo(offsetX + 333.696000 * multiplier, offsetY + 38.500000 * multiplier);
+        ctx.bezierCurveTo(offsetX + 333.696000 * multiplier, offsetY + 17.237000 * multiplier, offsetX + 320.624000 * multiplier, offsetY + 0.000000 * multiplier, offsetX + 304.498000 * multiplier, offsetY + 0.000000 * multiplier);
+        ctx.lineTo(offsetX + 29.200000 * multiplier, offsetY + 0.000000 * multiplier);
         ctx.closePath();
         ctx.stroke();
     }
@@ -116,6 +211,53 @@ class CardModel
         ctx.lineTo(345.795000, 354.012000);
         ctx.closePath();
         ctx.stroke();
+        
+        
+        /*
+        
+        // club top
+        ctx.beginPath();
+        ctx.moveTo(146.268000, 44.408000);
+        ctx.lineTo(146.283000, 44.408000);
+        ctx.bezierCurveTo(159.870000, 44.418000, 170.725000, 55.263000, 170.725000, 68.852000);
+        ctx.bezierCurveTo(170.725000, 74.562000, 168.722000, 79.849000, 165.459000, 84.025000);
+        ctx.bezierCurveTo(166.579000, 83.867000, 167.691000, 83.713000, 168.855000, 83.713000);
+        ctx.bezierCurveTo(182.450000, 83.713000, 193.313000, 94.873000, 193.313000, 108.467000);
+        ctx.bezierCurveTo(193.313000, 122.061000, 182.450000, 133.217000, 168.855000, 133.217000);
+        ctx.bezierCurveTo(163.095000, 133.217000, 157.775000, 131.171000, 153.561000, 127.797000);
+        ctx.lineTo(166.170000, 157.988000);
+        ctx.lineTo(126.053000, 157.988000);
+        ctx.lineTo(138.473000, 128.246000);
+        ctx.bezierCurveTo(134.353000, 131.361000, 129.240000, 133.216000, 123.697000, 133.216000);
+        ctx.bezierCurveTo(110.103000, 133.216000, 98.945000, 122.057000, 98.945000, 108.463000);
+        ctx.bezierCurveTo(98.945000, 94.868000, 110.103000, 83.713000, 123.697000, 83.713000);
+        ctx.bezierCurveTo(124.756000, 83.713000, 125.755000, 83.897000, 126.779000, 84.025000);
+        ctx.bezierCurveTo(123.564000, 79.865000, 121.531000, 74.516000, 121.531000, 68.852000);
+        ctx.bezierCurveTo(121.531000, 55.263000, 132.681000, 44.418000, 146.268000, 44.408000);
+        ctx.closePath();
+        
+        // Club bottom
+        ctx.beginPath();
+        ctx.moveTo(345.795000, 354.012000);
+        ctx.lineTo(385.912000, 354.012000);
+        ctx.lineTo(373.301000, 384.205000);
+        ctx.bezierCurveTo(377.516000, 380.831000, 382.836000, 378.783000, 388.596000, 378.783000);
+        ctx.bezierCurveTo(402.190000, 378.783000, 413.055000, 389.941000, 413.055000, 403.535000);
+        ctx.bezierCurveTo(413.055000, 417.130000, 402.190000, 428.287000, 388.595000, 428.287000);
+        ctx.bezierCurveTo(387.432000, 428.287000, 386.320000, 428.135000, 385.199000, 427.977000);
+        ctx.bezierCurveTo(388.462000, 432.153000, 390.465000, 437.439000, 390.465000, 443.150000);
+        ctx.bezierCurveTo(390.465000, 456.739000, 379.612000, 467.583000, 366.025000, 467.592000);
+        ctx.lineTo(366.008000, 467.592000);
+        ctx.bezierCurveTo(352.420000, 467.582000, 341.273000, 456.739000, 341.273000, 443.150000);
+        ctx.bezierCurveTo(341.273000, 437.485000, 343.306000, 432.137000, 346.521000, 427.977000);
+        ctx.bezierCurveTo(345.498000, 428.105000, 344.496000, 428.289000, 343.437000, 428.289000);
+        ctx.bezierCurveTo(329.843000, 428.289000, 318.686000, 417.130000, 318.686000, 403.535000);
+        ctx.bezierCurveTo(318.686000, 389.941000, 329.843000, 378.783000, 343.438000, 378.783000);
+        ctx.bezierCurveTo(348.980000, 378.783000, 354.093000, 380.641000, 358.213000, 383.756000);
+        ctx.lineTo(345.795000, 354.012000);
+        ctx.closePath();
+        ctx.stroke();
+         */
     }
     
     diamondDraw(ctx)
@@ -900,11 +1042,13 @@ function main() {
     
     var canvas = document.createElement("canvas");
     mainBody.appendChild(canvas);
-    canvas.width = "600";
-    canvas.height = "600";
+    canvas.width = "1136";
+    canvas.height = "605";
     
     var ctx = canvas.getContext("2d");
     
+    
+    /* This was for the outer dimensions of the image, but this is no longer needed
     var outer = [
         {
             x: 0.0,
@@ -922,8 +1066,6 @@ function main() {
         outer[i]["y"] += 10;
     }
     
-    
-    
     // Outer border dimensions
     ctx.beginPath();
     ctx.moveTo(outer[0]["x"],outer[0]["y"]);
@@ -932,20 +1074,14 @@ function main() {
     ctx.lineTo(outer[0]["x"],outer[1]["y"]);
     ctx.lineTo(outer[0]["x"],outer[0]["y"]);
     ctx.stroke();
+    */
     
+    //var cardDraw = new CardDrawModel();
+    //cardDraw.outerCardPerimeter(ctx,10, 10,0.50);
     
-    var cardDraw = new CardDrawModel();
+    var joker = new CardModel("red","joker");
     
-    
-    
-    cardDraw.outerCardPerimeter(ctx,10, 10,0.50);
-    
-    //cardDraw.starDraw(ctx);
-    
-    //cardDraw.twoDraw(ctx);
-    
-    
-    
+    joker.draw(ctx,10,10,440,340);
     
     
     
